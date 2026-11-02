@@ -1,130 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Reclaim the Block — Community Engagement Project</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bone: #F2EFE4;
-    --ink: #1C2B23;
-    --rust: #B6482F;
-    --sage: #5C8374;
-    --line: #D8D2C0;
-    --card: #E9E4D2;
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Reclaim the Block — Community Engagement Project</title>
+  
+  <!-- Supabase JS Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bone: #F2EFE4;
+      --ink: #1C2B23;
+      --rust: #B6482F;
+      --sage: #5C8374;
+      --line: #D8D2C0;
+      --card: #E9E4D2;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bone: #16201A; --ink: #EDE8D9; --rust: #E07A55; --sage: #8FB3A1; --line: #32402F; --card: #1F2B22;
+      }
+    }
+    :root[data-theme="dark"] {
       --bone: #16201A; --ink: #EDE8D9; --rust: #E07A55; --sage: #8FB3A1; --line: #32402F; --card: #1F2B22;
     }
-  }
-  :root[data-theme="dark"] {
-    --bone: #16201A; --ink: #EDE8D9; --rust: #E07A55; --sage: #8FB3A1; --line: #32402F; --card: #1F2B22;
-  }
-  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--bone); color: var(--ink);
-    font-family: 'Source Sans 3', system-ui, sans-serif;
-    font-size: 17px; line-height: 1.6;
-  }
-  h1, h2, h3, .display { font-family: 'Archivo Expanded', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.01em; }
-  .wrap { max-width: 920px; margin: 0 auto; padding: 0 24px; }
-  nav {
-    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
-    background: var(--bone); border-bottom: 1px solid var(--line);
-    padding: 14px 24px;
-  }
-  nav .wrap { display: flex; justify-content: space-between; align-items: center; padding: 0; max-width: 920px; }
-  .brand { font-family: 'Archivo Expanded'; font-weight: 800; font-size: 17px; }
-  .brand span { color: var(--rust); }
-  nav a { color: var(--ink); text-decoration: none; font-size: 14px; margin-left: 20px; opacity: 0.75; }
-  nav a:hover { opacity: 1; }
-  .navlinks { display: flex; }
-  @media (max-width: 640px) { .navlinks { display: none; } }
+    html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bone); color: var(--ink);
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-size: 17px; line-height: 1.6;
+    }
+    h1, h2, h3, .display { font-family: 'Archivo Expanded', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.01em; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+    nav {
+      position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+      background: var(--bone); border-bottom: 1px solid var(--line);
+      padding: 14px 24px;
+    }
+    nav .wrap { display: flex; justify-content: space-between; align-items: center; padding: 0; max-width: 920px; }
+    .brand { font-family: 'Archivo Expanded'; font-weight: 800; font-size: 17px; }
+    .brand span { color: var(--rust); }
+    nav a { color: var(--ink); text-decoration: none; font-size: 14px; margin-left: 20px; opacity: 0.75; }
+    nav a:hover { opacity: 1; }
+    .navlinks { display: flex; }
+    @media (max-width: 640px) { .navlinks { display: none; } }
 
-  section { padding: 64px 0; border-bottom: 1px solid var(--line); }
-  section:last-of-type { border-bottom: none; }
+    section { padding: 64px 0; border-bottom: 1px solid var(--line); }
+    section:last-of-type { border-bottom: none; }
 
-  .hero { padding-top: 72px; padding-bottom: 72px; }
-  .hero .kicker { color: var(--sage); font-weight: 600; font-size: 15px; margin-bottom: 14px; }
-  .hero h1 { font-size: clamp(2.3rem, 6vw, 3.6rem); line-height: 1.05; margin: 0 0 20px; max-width: 11ch; }
-  .hero p { max-width: 54ch; font-size: 19px; color: var(--ink); opacity: 0.85; margin-bottom: 28px; }
-  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
-  .btn { display: inline-block; padding: 13px 22px; border-radius: 3px; font-weight: 600; text-decoration: none; font-size: 15px; }
-  .btn-solid { background: var(--rust); color: var(--bone); }
-  .btn-outline { border: 1.5px solid var(--ink); color: var(--ink); }
+    .hero { padding-top: 72px; padding-bottom: 72px; }
+    .hero .kicker { color: var(--sage); font-weight: 600; font-size: 15px; margin-bottom: 14px; }
+    .hero h1 { font-size: clamp(2.3rem, 6vw, 3.6rem); line-height: 1.05; margin: 0 0 20px; max-width: 11ch; }
+    .hero p { max-width: 54ch; font-size: 19px; color: var(--ink); opacity: 0.85; margin-bottom: 28px; }
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn { display: inline-block; padding: 13px 22px; border-radius: 3px; font-weight: 600; text-decoration: none; font-size: 15px; }
+    .btn-solid { background: var(--rust); color: var(--bone); }
+    .btn-outline { border: 1.5px solid var(--ink); color: var(--ink); }
 
-  .hero-strip { display: flex; gap: 2px; margin-top: 48px; height: 64px; }
-  .hero-strip div { flex: 1; background: var(--sage); opacity: 0.35; }
-  .hero-strip div:nth-child(2) { opacity: 0.55; }
-  .hero-strip div:nth-child(3) { opacity: 0.75; }
-  .hero-strip div:nth-child(4) { opacity: 1; background: var(--rust); }
+    .hero-strip { display: flex; gap: 2px; margin-top: 48px; height: 64px; }
+    .hero-strip div { flex: 1; background: var(--sage); opacity: 0.35; }
+    .hero-strip div:nth-child(2) { opacity: 0.55; }
+    .hero-strip div:nth-child(3) { opacity: 0.75; }
+    .hero-strip div:nth-child(4) { opacity: 1; background: var(--rust); }
 
-  h2.section-title { font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 8px; }
-  .section-sub { color: var(--ink); opacity: 0.65; max-width: 58ch; margin-bottom: 36px; font-size: 16px; }
+    h2.section-title { font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 8px; }
+    .section-sub { color: var(--ink); opacity: 0.65; max-width: 58ch; margin-bottom: 36px; font-size: 16px; }
 
-  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  @media (max-width: 720px) { .grid-3 { grid-template-columns: 1fr; } }
-  .obj-card { border: 1px solid var(--line); background: var(--card); padding: 22px; border-radius: 4px; }
-  .obj-card h3 { font-size: 16px; margin: 0 0 8px; }
-  .obj-card p { font-size: 14.5px; opacity: 0.8; margin: 0; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 720px) { .grid-3 { grid-template-columns: 1fr; } }
+    .obj-card { border: 1px solid var(--line); background: var(--card); padding: 22px; border-radius: 4px; }
+    .obj-card h3 { font-size: 16px; margin: 0 0 8px; }
+    .obj-card p { font-size: 14.5px; opacity: 0.8; margin: 0; }
 
-  .timeline { border-left: 2px solid var(--line); margin-left: 8px; padding-left: 28px; }
-  .step { position: relative; padding-bottom: 32px; }
-  .step:last-child { padding-bottom: 0; }
-  .step::before {
-    content: attr(data-n); position: absolute; left: -41px; top: 0;
-    width: 28px; height: 28px; border-radius: 50%; background: var(--rust); color: var(--bone);
-    font-family: 'Archivo Expanded'; font-size: 13px; display: flex; align-items: center; justify-content: center;
-  }
-  .step h3 { font-size: 17px; margin: 0 0 6px; }
-  .step p { margin: 0; opacity: 0.8; font-size: 15px; }
+    .timeline { border-left: 2px solid var(--line); margin-left: 8px; padding-left: 28px; }
+    .step { position: relative; padding-bottom: 32px; }
+    .step:last-child { padding-bottom: 0; }
+    .step::before {
+      content: attr(data-n); position: absolute; left: -41px; top: 0;
+      width: 28px; height: 28px; border-radius: 50%; background: var(--rust); color: var(--bone);
+      font-family: 'Archivo Expanded'; font-size: 13px; display: flex; align-items: center; justify-content: center;
+    }
+    .step h3 { font-size: 17px; margin: 0 0 6px; }
+    .step p { margin: 0; opacity: 0.8; font-size: 15px; }
 
-  .people { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
-  .person { border: 1px solid var(--line); padding: 18px; border-radius: 4px; }
-  .person .role { color: var(--sage); font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-  .person .name { font-weight: 600; font-size: 16px; }
-  .person .note { font-size: 14px; opacity: 0.75; margin-top: 6px; }
+    .people { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+    .person { border: 1px solid var(--line); padding: 18px; border-radius: 4px; }
+    .person .role { color: var(--sage); font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .person .name { font-weight: 600; font-size: 16px; }
+    .person .note { font-size: 14px; opacity: 0.75; margin-top: 6px; }
 
-  .impact-row { display: flex; gap: 28px; flex-wrap: wrap; }
-  .impact-item { flex: 1; min-width: 160px; }
-  .impact-item .num { font-family: 'Archivo Expanded'; font-size: 2.4rem; color: var(--rust); line-height: 1; }
-  .impact-item .label { font-size: 14px; opacity: 0.75; margin-top: 6px; }
+    .impact-row { display: flex; gap: 28px; flex-wrap: wrap; }
+    .impact-item { flex: 1; min-width: 160px; }
+    .impact-item .num { font-family: 'Archivo Expanded'; font-size: 2.4rem; color: var(--rust); line-height: 1; }
+    .impact-item .label { font-size: 14px; opacity: 0.75; margin-top: 6px; }
 
-  .contact-box { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 32px; }
-  .contact-box p { opacity: 0.8; }
-  .note-edit { font-size: 13px; color: var(--rust); border: 1px dashed var(--rust); padding: 10px 14px; border-radius: 4px; margin-top: 10px; display: inline-block; }
+    .contact-box { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 32px; }
+    .contact-box p { opacity: 0.8; }
+    .note-edit { font-size: 13px; color: var(--rust); border: 1px dashed var(--rust); padding: 10px 14px; border-radius: 4px; margin-top: 10px; display: inline-block; }
 
-  footer { padding: 32px 0 calc(32px + env(safe-area-inset-bottom, 0px)); text-align: center; font-size: 13px; opacity: 0.6; }
+    footer { padding: 32px 0 calc(32px + env(safe-area-inset-bottom, 0px)); text-align: center; font-size: 13px; opacity: 0.6; }
 
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
-  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
-  form { display: flex; flex-direction: column; gap: 12px; }
-  label { font-size: 13px; font-weight: 600; opacity: 0.75; }
-  input, textarea, select {
-    font-family: inherit; font-size: 15px; padding: 10px 12px; border: 1px solid var(--line);
-    border-radius: 3px; background: var(--bone); color: var(--ink); width: 100%;
-  }
-  textarea { resize: vertical; min-height: 70px; }
-  .btn-form { background: var(--sage); color: var(--bone); border: none; padding: 12px 20px; border-radius: 3px; font-weight: 600; font-size: 15px; cursor: pointer; }
-  .btn-form:disabled { opacity: 0.5; cursor: default; }
-  .form-status { font-size: 14px; min-height: 18px; }
-  .form-status.ok { color: var(--sage); }
-  .form-status.err { color: var(--rust); }
-  .live-count { font-family: 'Archivo Expanded'; font-size: 2.6rem; color: var(--sage); line-height: 1; }
-  .fb-list { display: flex; flex-direction: column; gap: 14px; max-height: 360px; overflow-y: auto; }
-  .fb-item { border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px; background: var(--card); }
-  .fb-item .fb-top { display: flex; justify-content: space-between; font-size: 13px; opacity: 0.7; margin-bottom: 4px; }
-  .fb-item .fb-msg { font-size: 14.5px; }
-  .backend-note { font-size: 13px; opacity: 0.6; margin-top: 10px; }
-</style>
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+    @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+    form { display: flex; flex-direction: column; gap: 12px; }
+    label { font-size: 13px; font-weight: 600; opacity: 0.75; }
+    input, textarea, select {
+      font-family: inherit; font-size: 15px; padding: 10px 12px; border: 1px solid var(--line);
+      border-radius: 3px; background: var(--bone); color: var(--ink); width: 100%;
+    }
+    textarea { resize: vertical; min-height: 70px; }
+    .btn-form { background: var(--sage); color: var(--bone); border: none; padding: 12px 20px; border-radius: 3px; font-weight: 600; font-size: 15px; cursor: pointer; }
+    .btn-form:disabled { opacity: 0.5; cursor: default; }
+    .form-status { font-size: 14px; min-height: 18px; }
+    .form-status.ok { color: var(--sage); }
+    .form-status.err { color: var(--rust); }
+    .live-count { font-family: 'Archivo Expanded'; font-size: 2.6rem; color: var(--sage); line-height: 1; }
+    .fb-list { display: flex; flex-direction: column; gap: 14px; max-height: 360px; overflow-y: auto; }
+    .fb-item { border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px; background: var(--card); }
+    .fb-item .fb-top { display: flex; justify-content: space-between; font-size: 13px; opacity: 0.7; margin-bottom: 4px; }
+    .fb-item .fb-msg { font-size: 14.5px; }
+    .backend-note { font-size: 13px; opacity: 0.6; margin-top: 10px; }
+  </style>
 </head>
 <body>
 
@@ -271,12 +276,16 @@
 <section id="volunteer">
   <div class="wrap">
     <h2 class="section-title">Join the next drive</h2>
-    <p class="section-sub">Sign up and your name joins the live volunteer count below — stored for this project, not just this browser.</p>
+    <p class="section-sub">Sign up and your name joins the live volunteer count below — stored directly in Supabase DB.</p>
     <div class="two-col">
       <form id="volForm">
         <div>
           <label for="volName">Name</label>
           <input id="volName" required maxlength="60" placeholder="Your name">
+        </div>
+        <div>
+          <label for="volEmail">Email</label>
+          <input type="email" id="volEmail" required maxlength="100" placeholder="Your email address">
         </div>
         <div>
           <label for="volAvail">When are you free?</label>
@@ -301,7 +310,7 @@
 <section id="feedback">
   <div class="wrap">
     <h2 class="section-title">Community feedback</h2>
-    <p class="section-sub">Residents and participants can leave a note here — it's saved to the project, visible to every visitor.</p>
+    <p class="section-sub">Residents and participants can leave a note here — saved to Supabase, visible to every visitor.</p>
     <div class="two-col">
       <form id="fbForm">
         <div>
@@ -335,93 +344,134 @@
   Community Engagement Project · BSc IT · University of Mumbai · Academic Year 2025–26
 </footer>
 
+<!-- Database Client Script -->
 <script>
 (function(){
+  // Initialize Supabase Client
+  const SUPABASE_URL = 'https://mxwgszknkeijmlvrygqu.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_vQAU0orbPqytLQUTXt3Tmw_Kf3dsqne';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
   function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
   function fmtDate(ts){ try { return new Date(ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}); } catch(e){ return ''; } }
 
-  async function init(){
-    let db, user;
+  const volNote = document.getElementById('volNote');
+  const volCount = document.getElementById('volCount');
+  const volStatus = document.getElementById('volStatus');
+  const volForm = document.getElementById('volForm');
+  const fbList = document.getElementById('fbList');
+  const fbStatus = document.getElementById('fbStatus');
+  const fbForm = document.getElementById('fbForm');
+
+  // Fetch Live Volunteer Count
+  async function fetchVolunteerCount() {
     try {
-      db = await window.claude.use('db');
-      user = await window.claude.use('user');
-    } catch(e) { db = null; }
+      const { count, error } = await supabaseClient
+        .from('volunteers')
+        .select('*', { count: 'exact', head: true });
 
-    const volNote = document.getElementById('volNote');
-    const volCount = document.getElementById('volCount');
-    const volStatus = document.getElementById('volStatus');
-    const volForm = document.getElementById('volForm');
-    const fbList = document.getElementById('fbList');
-    const fbStatus = document.getElementById('fbStatus');
-    const fbForm = document.getElementById('fbForm');
-
-    if (!db || !user) {
-      volCount.textContent = '—';
-      volNote.textContent = 'Live sign-ups are not available on this hosted copy. They run on the claude.ai version of this project.';
-      fbList.innerHTML = '<div class="backend-note">Feedback storage is not available on this hosted copy. It runs on the claude.ai version of this project.</div>';
-      volForm.querySelector('button').disabled = true;
-      fbForm.querySelector('button').disabled = true;
-      return;
+      if (error) throw error;
+      volCount.textContent = count || 0;
+    } catch (e) {
+      console.error('Count Error:', e);
+      volCount.textContent = '0';
     }
-
-    try {
-      db.collection('volunteers').onSnapshot(snap => {
-        const docs = (snap && snap.docs) || snap || [];
-        volCount.textContent = docs.length;
-      });
-    } catch(e) { volCount.textContent = '0'; }
-
-    try {
-      db.collection('feedback').onSnapshot(snap => {
-        const docs = ((snap && snap.docs) || snap || []).slice().sort((a,b) => (b.data?.ts||b.ts||0) - (a.data?.ts||a.ts||0));
-        if (!docs.length) { fbList.innerHTML = '<div class="backend-note">No feedback yet — be the first.</div>'; return; }
-        fbList.innerHTML = docs.map(d => {
-          const data = d.data || d;
-          return '<div class="fb-item"><div class="fb-top"><span>' + esc(data.name||'Anonymous') + '</span><span>' + fmtDate(data.ts) + '</span></div><div class="fb-msg">' + esc(data.message||'') + '</div></div>';
-        }).join('');
-      });
-    } catch(e) { fbList.innerHTML = '<div class="backend-note">Couldn\'t load feedback right now.</div>'; }
-
-    volForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = volForm.querySelector('button');
-      btn.disabled = true;
-      volStatus.textContent = '';
-      try {
-        const uid = await user.id();
-        const name = document.getElementById('volName').value.trim();
-        const availability = document.getElementById('volAvail').value;
-        await db.doc('volunteers/' + uid).set({ name, availability, ts: Date.now() });
-        volStatus.textContent = 'Thanks — you\'re on the list.';
-        volStatus.className = 'form-status ok';
-        volForm.reset();
-      } catch(err) {
-        volStatus.textContent = 'Couldn\'t save that — try again.';
-        volStatus.className = 'form-status err';
-      } finally { btn.disabled = false; }
-    });
-
-    fbForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = fbForm.querySelector('button');
-      btn.disabled = true;
-      fbStatus.textContent = '';
-      try {
-        const uid = await user.id();
-        const name = document.getElementById('fbName').value.trim();
-        const message = document.getElementById('fbMsg').value.trim();
-        await db.doc('feedback/' + uid).set({ name, message, ts: Date.now() });
-        fbStatus.textContent = 'Posted — thank you.';
-        fbStatus.className = 'form-status ok';
-        fbForm.reset();
-      } catch(err) {
-        fbStatus.textContent = 'Couldn\'t post that — try again.';
-        fbStatus.className = 'form-status err';
-      } finally { btn.disabled = false; }
-    });
   }
 
-  init();
+  // Fetch Feedback Posts
+  async function loadFeedback() {
+    try {
+      const { data, error } = await supabaseClient
+        .from('feedback')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      if (!data || data.length === 0) {
+        fbList.innerHTML = '<div class="backend-note">No feedback yet — be the first.</div>';
+        return;
+      }
+
+      fbList.innerHTML = data.map(item => `
+        <div class="fb-item">
+          <div class="fb-top">
+            <span>${esc(item.name || 'Anonymous')}</span>
+            <span>${fmtDate(item.created_at)}</span>
+          </div>
+          <div class="fb-msg">${esc(item.comment || '')}</div>
+        </div>
+      `).join('');
+    } catch (e) {
+      console.error('Feedback Error:', e);
+      fbList.innerHTML = '<div class="backend-note">Couldn\'t load feedback right now.</div>';
+    }
+  }
+
+  // Handle Volunteer Sign-up Submission
+  volForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = volForm.querySelector('button');
+    btn.disabled = true;
+    volStatus.textContent = '';
+
+    const name = document.getElementById('volName').value.trim();
+    const email = document.getElementById('volEmail').value.trim();
+    const availability = document.getElementById('volAvail').value;
+
+    try {
+      const { error } = await supabaseClient
+        .from('volunteers')
+        .insert([{ name, email, role: availability }]);
+
+      if (error) throw error;
+
+      volStatus.textContent = "Thanks — you're on the list.";
+      volStatus.className = 'form-status ok';
+      volForm.reset();
+      fetchVolunteerCount();
+    } catch (err) {
+      console.error('Submission Error:', err);
+      volStatus.textContent = 'Couldn\'t save that — try again.';
+      volStatus.className = 'form-status err';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  // Handle Feedback Submission
+  fbForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = fbForm.querySelector('button');
+    btn.disabled = true;
+    fbStatus.textContent = '';
+
+    const name = document.getElementById('fbName').value.trim();
+    const comment = document.getElementById('fbMsg').value.trim();
+
+    try {
+      const { error } = await supabaseClient
+        .from('feedback')
+        .insert([{ name, comment, role: 'Resident' }]);
+
+      if (error) throw error;
+
+      fbStatus.textContent = 'Posted — thank you.';
+      fbStatus.className = 'form-status ok';
+      fbForm.reset();
+      loadFeedback();
+    } catch (err) {
+      console.error('Feedback Error:', err);
+      fbStatus.textContent = 'Couldn\'t post that — try again.';
+      fbStatus.className = 'form-status err';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  // Initial Load
+  fetchVolunteerCount();
+  loadFeedback();
 })();
 </script>
 </body>

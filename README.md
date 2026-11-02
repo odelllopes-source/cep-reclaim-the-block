@@ -6,6 +6,5 @@ Topic: Improve public spaces and civic hygiene through youth-led volunteering.
 
 Team: Odell Lopes (Roll 44), Rugved Padhye (Roll 61)
 
-Live site: https://YOUR-USERNAME.github.io/YOUR-REPO/
-
+Live site: https://odelllopes-source.github.io/cep-reclaim-the-block/
 Note: the volunteer sign-up and feedback sections use the Claude artifact database, so they only work on the claude.ai version. This GitHub copy is the static showcase.
